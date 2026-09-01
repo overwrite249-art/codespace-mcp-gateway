@@ -1,0 +1,19 @@
+{
+  "name": "codespace-mcp-gateway",
+  "image": "mcr.microsoft.com/devcontainers/universal:2-linux",
+  "hostRequirements": {
+    "cpus": 2
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "postStartCommand": "bash .devcontainer/start-agent.sh",
+  "remoteEnv": {
+    "MCP_AGENT_CWD": "${containerWorkspaceFolder}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint"]
+    }
+  }
+}
