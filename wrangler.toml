@@ -1,0 +1,33 @@
+# Cloudflare Worker configuration for the codespace MCP gateway.
+#
+# Secrets are never stored here. Set them once with:
+#   wrangler secret put GITHUB_TOKEN     # PAT with the codespace scope
+#   wrangler secret put MCP_API_KEY      # key that guards /mcp, /sse and /api
+#   wrangler secret put AGENT_TOKEN      # optional, separate key for the agent
+
+name = "codespace-mcp-gateway"
+main = "src/index.js"
+compatibility_date = "2025-05-05"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[vars]
+REPO_OWNER = "overwrite249-art"
+REPO_NAME = "codespace-mcp-gateway"
+# Idle window before the shared codespace is deleted (5 minutes).
+IDLE_TIMEOUT_MS = "300000"
+# 2-core / 8 GB machine type.
+CODESPACE_MACHINE = "basicLinux32gb"
+# Belt and braces: GitHub also stops and reaps the box if the Worker ever dies.
+CODESPACE_IDLE_MINUTES = "30"
+CODESPACE_RETENTION_MINUTES = "120"
+
+[[durable_objects.bindings]]
+name = "GATEWAY"
+class_name = "CodespaceGateway"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["CodespaceGateway"]

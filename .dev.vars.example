@@ -1,0 +1,15 @@
+# Copy to .dev.vars for local `wrangler dev`. .dev.vars is gitignored.
+# Never commit real values: production secrets live in Cloudflare only.
+
+GITHUB_TOKEN=github-pat-with-codespace-scope
+MCP_API_KEY=choose-a-long-random-key
+# Optional: separate key for the in-codespace agent. Falls back to MCP_API_KEY.
+AGENT_TOKEN=
+
+REPO_OWNER=overwrite249-art
+REPO_NAME=codespace-mcp-gateway
+
+IDLE_TIMEOUT_MS=300000
+CODESPACE_MACHINE=basicLinux32gb
+CODESPACE_IDLE_MINUTES=30
+CODESPACE_RETENTION_MINUTES=120

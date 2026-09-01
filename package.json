@@ -1,0 +1,20 @@
+{
+  "name": "codespace-mcp-gateway",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "MCP gateway on Cloudflare Workers that manages a single shared GitHub Codespace on demand, with a command queue and idle auto-teardown.",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "secrets": "bash scripts/set-secrets.sh",
+    "agent": "node agent/agent.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.20.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
