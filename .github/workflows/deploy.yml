@@ -1,0 +1,42 @@
+name: deploy worker
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "wrangler.toml"
+      - "package.json"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+# Optional CI deploy. Add these repository secrets to switch it on:
+#   CLOUDFLARE_API_TOKEN   token with the "Edit Cloudflare Workers" template
+#   CLOUDFLARE_ACCOUNT_ID  your account id
+#   GATEWAY_GITHUB_TOKEN   PAT with the codespace scope (GITHUB_TOKEN is reserved by Actions)
+#   GATEWAY_MCP_API_KEY    the gateway API key
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.ENABLE_CI_DEPLOY == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - run: npm install
+
+      - name: Deploy and sync secrets
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          secrets: |
+            GITHUB_TOKEN
+            MCP_API_KEY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GATEWAY_GITHUB_TOKEN }}
+          MCP_API_KEY: ${{ secrets.GATEWAY_MCP_API_KEY }}
